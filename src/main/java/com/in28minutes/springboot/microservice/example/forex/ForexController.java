@@ -1,5 +1,7 @@
 package com.in28minutes.springboot.microservice.example.forex;
 
+import java.math.BigDecimal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,12 +13,17 @@ public class ForexController {
 	@Autowired
 	private Environment environment;
 	
-	@Autowired
-	private ExchangeValueRepository repository;
+	//@Autowired
+	//private ExchangeValueRepository repository;
 	
 	@GetMapping("/currency-exchange/from/{from}/to/{to}")
 	public ExchangeValue retrieveExchangeValue(@PathVariable String from, @PathVariable String to) {
-		ExchangeValue exchangeValue = repository.findByFromAndTo(from, to);
+		ExchangeValue exchangeValue = new ExchangeValue();
+		exchangeValue.setPort(8080);
+		exchangeValue.setId(12345L);
+		exchangeValue.setFrom(from);
+		exchangeValue.setTo(to);
+		exchangeValue.setConversionMultiple(BigDecimal.valueOf(75L));
 		
 		exchangeValue.setPort(Integer.parseInt(environment.getProperty("local.server.port")));
 		
